@@ -39,6 +39,7 @@
 
 - (void)viewDidLoad {
     [super viewDidLoad];
+    self.automaticallyAdjustsScrollViewInsets = NO;
     [self setupDataSource];
     // Do any additional setup after loading the view, typically from a nib.
 }

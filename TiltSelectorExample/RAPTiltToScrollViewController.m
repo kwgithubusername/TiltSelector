@@ -113,11 +113,6 @@
 {
     [super viewDidLoad];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(adjustTableView) name:RAPGetRectSelectorShapesNotification object:nil];
-    [[NSNotificationCenter defaultCenter]
-     addObserver:self
-     selector:@selector(deviceOrientationDidChange)
-     name:UIDeviceOrientationDidChangeNotification
-     object:nil];
     self.cellRectSizeArray = [[NSMutableArray alloc] init];
     self.automaticallyAdjustsScrollViewInsets = NO;
     self.tiltToScroll.delegate = self;
@@ -156,8 +151,6 @@
     [[NSNotificationCenter defaultCenter] removeObserver:self name:RAPSegueBackNotification object:nil];
     
     [[NSNotificationCenter defaultCenter] removeObserver:self name:RAPGetRectSelectorShapesNotification object:nil];
-    
-    [[NSNotificationCenter defaultCenter] removeObserver:self name:UIDeviceOrientationDidChangeNotification object:nil];
     
     [self.timerToPreventSegueingBackTooQuickly invalidate];
 }

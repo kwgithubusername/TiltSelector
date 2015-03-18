@@ -7,8 +7,9 @@
 //
 
 #import <UIKit/UIKit.h>
+#import "RAPTiltToScrollViewController.h"
 
-@interface TSESecondViewController : UIViewController
+@interface TSESecondViewController : RAPTiltToScrollViewController
 
 @property (nonatomic) int selectedRow;
 

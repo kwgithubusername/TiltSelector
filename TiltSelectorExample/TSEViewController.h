@@ -7,8 +7,9 @@
 //
 
 #import <UIKit/UIKit.h>
+#import "RAPTiltToScrollViewController.h"
 
-@interface TSEViewController : UIViewController
+@interface TSEViewController : RAPTiltToScrollViewController
 
 
 @end
