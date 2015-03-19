@@ -14,4 +14,7 @@
 @property (weak, nonatomic) UITableView *tableView;
 @property (nonatomic) RAPRectangleSelector *rectangleSelector;
 @property (nonatomic) BOOL rectSelectorHasBeenMade;
+
+-(void)calibrate;
+
 @end

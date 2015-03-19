@@ -27,7 +27,14 @@
 
 -(void)segueWhenSelectedRow
 {
-    [self performSegueWithIdentifier:@"segue" sender:nil];
+    if (super.rectangleSelector.cellIndex == super.rectangleSelector.cellMax)
+    {
+        [super calibrate];
+    }
+    else
+    {
+        [self performSegueWithIdentifier:@"segue" sender:nil];        
+    }
 }
 
 -(void)addSelfAsObserverForSegueWhenSelectedRow
@@ -72,7 +79,7 @@
     };
     
     NSInteger (^numberOfRowsBlock)() = ^NSInteger() {
-        return 20;
+        return 15;
     };
     
     self.dataSource = [[TSEDataSource alloc] initWithConfigureCellBlock:configureCellBlock
@@ -90,12 +97,6 @@
 - (void)viewWillDisappear:(BOOL)animated
 {
     [super viewWillDisappear:animated];
-}
-
-- (void)viewDidAppear:(BOOL)animated
-{
-    // Fix for dynamic table view size
-    [self.tableView reloadSections:[NSIndexSet indexSetWithIndexesInRange:NSMakeRange(0, self.tableView.numberOfSections)] withRowAnimation:UITableViewRowAnimationNone];
 }
 
 - (void)viewDidLoad {

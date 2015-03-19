@@ -41,6 +41,11 @@
 
 #pragma mark Calibration
 
+-(void)calibrate
+{
+    [self calibrateTiltButtonTapped:nil];
+}
+
 - (IBAction)calibrateTiltButtonTapped:(UIBarButtonItem *)sender
 {
     UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:@"Hold device at a comfortable angle" message:@"Tilt mechanism will auto-calibrate in 3 seconds" delegate:self cancelButtonTitle:nil otherButtonTitles: nil];
@@ -89,7 +94,7 @@
     
     [[NSNotificationCenter defaultCenter] removeObserver:self name:RAPTableViewShouldAdjustToNearestRowAtIndexPathNotification object:self.tiltToScroll];
     NSIndexPath *indexPath = [self.tableView indexPathForCell:[[self.tableView visibleCells] firstObject]];
-    //NSLog(@"IndexPath is %d", indexPath.row);
+    NSLog(@"IndexPath is %ld", (long)indexPath.row);
     [self.tableView scrollToRowAtIndexPath:indexPath atScrollPosition:UITableViewScrollPositionTop animated:YES];
     NSLog(@"startfill");
     [self fillCellRectSizeArrayWithVisibleCells];
