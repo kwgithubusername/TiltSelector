@@ -11,7 +11,7 @@
 #import <UIKit/UIKit.h>
 
 typedef UITableViewCell* (^ConfigureCellBlock)(id indexPath);
-typedef NSInteger (^NumberOfRowsInSectionBlock)(NSInteger section);
+typedef NSInteger (^NumberOfRowsInSectionBlock)();
 
 @interface TSEDataSource : NSObject <UITableViewDataSource, UITableViewDelegate>
 

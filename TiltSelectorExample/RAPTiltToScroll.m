@@ -135,8 +135,8 @@
     {
         //NSLog(@"Tilted %f degrees clockwise", leftOrRightAngle);
         if (!isInWebView)
-        {
-            if (scrollView.contentOffset.y + leftOrRightAngle/5 >= -64 && !self.selectModeIsOn)
+        {   // leftOrRightAngle/5 is the distance to be scrolled
+            if (scrollView.contentOffset.y + leftOrRightAngle/5 >= -64 && scrollView.contentOffset.y + leftOrRightAngle/5 <= scrollView.bounds.size.height && !self.selectModeIsOn)
             {
                 CGPoint offsetCGPoint = CGPointMake(scrollView.contentOffset.x, scrollView.contentOffset.y + leftOrRightAngle/5);
                 scrollView.contentOffset = offsetCGPoint;
@@ -145,7 +145,7 @@
                 {
                     // This should happen only ONCE per scrolling session- note when a scrollingsession began and when it ends
                     [self.delegate addObserverForAdjustToNearestRowNotification];
-                    NSLog(@"delegate called");
+                    //NSLog(@"delegate called");
                     self.scrollingSessionHasStarted = YES;
                 }
                 

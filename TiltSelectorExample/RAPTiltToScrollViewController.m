@@ -15,6 +15,8 @@
 #define RAPSegueNotification @"RAPSegueNotification"
 #define RAPSegueBackNotification @"RAPSegueBackNotification"
 #define RAPGetRectSelectorShapesNotification @"RAPGetRectSelectorShapesNotification"
+#define RAPFinalRowLoadedNotification @"RAPFinalRowLoadedNotification"
+
 
 @interface RAPTiltToScrollViewController ()
 
@@ -27,6 +29,7 @@
 @property (nonatomic) BOOL isInWebView;
 @property (nonatomic) UIWebView *webView;
 @property (nonatomic) NSMutableArray *cellRectSizeArray;
+@property (nonatomic) NSMutableArray *cellRectSizeArrayWithLastRowVisible;
 @property (nonatomic) BOOL spinnerIsStopped;
 
 @end
@@ -119,6 +122,7 @@
     [super viewDidLoad];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(adjustTableView) name:RAPGetRectSelectorShapesNotification object:nil];
     self.cellRectSizeArray = [[NSMutableArray alloc] init];
+    self.cellRectSizeArrayWithLastRowVisible = [[NSMutableArray alloc] init];
     self.automaticallyAdjustsScrollViewInsets = NO;
     self.tiltToScroll.delegate = self;
 }
@@ -128,6 +132,7 @@
     [super viewWillAppear:animated];
     [self.tiltToScroll startTiltToScrollWithSensitivity:1 forScrollView:[self appropriateScrollView] inWebView:self.isInWebView];
     [self addObserverForRectSelector];
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(countFinalRowsThatAreVisible) name:RAPFinalRowLoadedNotification object:nil];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(segueBack) name:RAPSegueBackNotification object:nil];
     self.timeViewHasBeenVisibleInt = 0;
     self.timerToPreventSegueingBackTooQuickly = [NSTimer scheduledTimerWithTimeInterval:0.05 target:self selector:@selector(timeViewHasBeenVisible) userInfo:nil repeats:YES];
@@ -163,16 +168,38 @@
 
 #pragma mark Rectangle Selector methods
 
+-(void)countFinalRowsThatAreVisible
+{
+    [self.cellRectSizeArrayWithLastRowVisible removeAllObjects];
+    
+    for (UITableViewCell *cell in [self.tableView visibleCells])
+    {
+        // Need to increment visible cells by 1;
+        [self.cellRectSizeArrayWithLastRowVisible addObject:[NSValue valueWithCGRect:[self.tableView rectForRowAtIndexPath:[NSIndexPath indexPathForRow:[self.tableView indexPathForCell:cell].row+1 inSection:0]]]];
+        NSLog(@"adding cell with indexPath %ld", (long)[self.tableView indexPathForCell:cell].row+1);
+    }
+    
+}
+
 -(void)fillCellRectSizeArrayWithVisibleCells
 {
     [[NSNotificationCenter defaultCenter] removeObserver:self name:RAPGetRectSelectorShapesNotification object:nil];
     
     [self.cellRectSizeArray removeAllObjects];
     
-    for (UITableViewCell *cell in [self.tableView visibleCells])
+    if ([self.tableView indexPathForCell:[[self.tableView visibleCells] lastObject]].row != [self.tableView numberOfRowsInSection:0]-1)
     {
-        [self.cellRectSizeArray addObject:[NSValue valueWithCGRect:[self.tableView rectForRowAtIndexPath:[self.tableView indexPathForCell:cell]]]];
+        for (UITableViewCell *cell in [self.tableView visibleCells])
+        {
+            [self.cellRectSizeArray addObject:[NSValue valueWithCGRect:[self.tableView rectForRowAtIndexPath:[self.tableView indexPathForCell:cell]]]];
+            //NSLog(@"adding cell with indexPath %ld", (long)[self.tableView indexPathForCell:cell].row);
+        }
     }
+    else
+    {
+        [self.cellRectSizeArray addObjectsFromArray:self.cellRectSizeArrayWithLastRowVisible];
+    }
+
     //NSLog(@"added rects");
 }
 
