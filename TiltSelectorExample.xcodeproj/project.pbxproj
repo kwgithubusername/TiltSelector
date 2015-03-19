@@ -104,12 +104,7 @@
 				9ECEC0F41ABA2D55009025EF /* TSEDataSource.m */,
 				9ECEC0F61ABA2F69009025EF /* TSESecondViewController.h */,
 				9ECEC0F71ABA2F69009025EF /* TSESecondViewController.m */,
-				9ECEC0EA1ABA2C36009025EF /* RAPTiltToScrollViewController.h */,
-				9ECEC0EB1ABA2C36009025EF /* RAPTiltToScrollViewController.m */,
-				9ECEC0EC1ABA2C36009025EF /* RAPRectangleSelector.h */,
-				9ECEC0ED1ABA2C36009025EF /* RAPRectangleSelector.m */,
-				9ECEC0EE1ABA2C36009025EF /* RAPTiltToScroll.h */,
-				9ECEC0EF1ABA2C36009025EF /* RAPTiltToScroll.m */,
+				9ECEC0F91ABA5038009025EF /* TiltSelector */,
 				9ECEC0CE1ABA2BF7009025EF /* Main.storyboard */,
 				9ECEC0D11ABA2BF7009025EF /* Images.xcassets */,
 				9ECEC0D31ABA2BF7009025EF /* LaunchScreen.xib */,
@@ -142,6 +137,19 @@
 				9ECEC0DF1ABA2BF7009025EF /* Info.plist */,
 			);
 			name = "Supporting Files";
+			sourceTree = "<group>";
+		};
+		9ECEC0F91ABA5038009025EF /* TiltSelector */ = {
+			isa = PBXGroup;
+			children = (
+				9ECEC0EA1ABA2C36009025EF /* RAPTiltToScrollViewController.h */,
+				9ECEC0EB1ABA2C36009025EF /* RAPTiltToScrollViewController.m */,
+				9ECEC0EC1ABA2C36009025EF /* RAPRectangleSelector.h */,
+				9ECEC0ED1ABA2C36009025EF /* RAPRectangleSelector.m */,
+				9ECEC0EE1ABA2C36009025EF /* RAPTiltToScroll.h */,
+				9ECEC0EF1ABA2C36009025EF /* RAPTiltToScroll.m */,
+			);
+			name = TiltSelector;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
