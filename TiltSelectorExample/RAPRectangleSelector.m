@@ -189,7 +189,14 @@
         newFrame = self.toolBarRect;
     }
     
-    self.frame = newFrame;
+    dispatch_async(dispatch_get_main_queue(), ^{
+        [UIView beginAnimations:nil context:nil];
+        [UIView setAnimationDuration:0.1];
+        [UIView setAnimationCurve:UIViewAnimationCurveLinear];
+        self.frame = newFrame;
+        [UIView commitAnimations];
+    });
+    
     self.currentLocationRect = newFrame;
     //NSLog(@"Neworigin is %@", NSStringFromCGPoint(self.currentLocationRect.origin));
     
