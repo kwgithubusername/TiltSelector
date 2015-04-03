@@ -23,8 +23,8 @@
     self = [super init];
     if (self)
     {
-        self.configureCellBlock = aConfigureCellBlock;
-        self.numberOfRowsInSectionBlock = aNumberOfRowsInSectionBlock;
+        self.configureCellBlock = [aConfigureCellBlock copy];
+        self.numberOfRowsInSectionBlock = [aNumberOfRowsInSectionBlock copy];
     }
     return self;
 }
