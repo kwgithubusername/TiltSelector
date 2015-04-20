@@ -131,7 +131,7 @@
 
 -(void)scrollTableViewWithIntensityOfAnglesLeftOrRight:(CGFloat)leftOrRightAngle ForwardOrBackward:(CGFloat)forwardOrBackwardAngle inScrollView:(UIScrollView *)scrollView inWebView:(BOOL)isInWebView
 {
-    if (leftOrRightAngle > 10 || leftOrRightAngle < -10)
+    if ((forwardOrBackwardAngle < 20 + self.calibratedAngle || forwardOrBackwardAngle > -20 + self.calibratedAngle) && (leftOrRightAngle > 10 || leftOrRightAngle < -10))
     {
         //NSLog(@"Tilted %f degrees clockwise", leftOrRightAngle);
         if (!isInWebView)
@@ -182,7 +182,7 @@
         }
         //NSLog(@"Contentoffset.y is %f", scrollView.contentOffset.y);
     }
-    if (forwardOrBackwardAngle > 20 + self.calibratedAngle || forwardOrBackwardAngle < -20 + self.calibratedAngle)
+    if ((forwardOrBackwardAngle > 20 + self.calibratedAngle || forwardOrBackwardAngle < -20 + self.calibratedAngle) && (leftOrRightAngle < 10 || leftOrRightAngle > -10))
     {
         //NSLog(@"Tilted %f degrees", forwardOrBackwardAngle);
         if (!self.selectModeHasBeenSwitched) // selectModeHasBeenSwitched is needed to differentiate between neutral state and selecting state. selectModeIsOn is used to toggle between creating the rect selector and removing it.
