@@ -34,7 +34,7 @@
     if (self)
     {
         self.calibratedAngle = [[[NSUserDefaults standardUserDefaults] objectForKey:@"calibratedAngle"] floatValue];
-        NSLog(@"calibratedangle is %f", self.calibratedAngle);
+        //NSLog(@"calibratedangle is %f", self.calibratedAngle);
     }
     return self;
 }
@@ -67,6 +67,7 @@
 }
 -(void)startTiltToScrollWithSensitivity:(float)sensitivity forScrollView:(UIScrollView *)scrollView inWebView:(BOOL)isInWebView
 {
+    self.hasStarted = YES;
     //NSLog(@"Contentoffset.y is %f", scrollView.contentOffset.y);
     [self.motionManager startDeviceMotionUpdatesUsingReferenceFrame:CMAttitudeReferenceFrameXArbitraryZVertical toQueue:[NSOperationQueue mainQueue] withHandler:^(CMDeviceMotion *motion, NSError *error)
      {
@@ -93,7 +94,7 @@
                  {
                      self.calibratedAngle = tiltAngleForwardorBackward;
                      [[NSUserDefaults standardUserDefaults] setObject:[NSNumber numberWithFloat:self.calibratedAngle] forKey:@"calibratedAngle"];
-                     NSLog(@"calibratedangle is %f", self.calibratedAngle);
+                     //NSLog(@"calibratedangle is %f", self.calibratedAngle);
                      self.isCalibrating = NO;
                      self.hasCalibrated = NO;
                  }
@@ -114,6 +115,10 @@
 -(void)stopTiltToScroll
 {
     [self.motionManager stopDeviceMotionUpdates];
+    self.selectModeIsOn = NO;
+    self.selectModeHasBeenSwitched = NO;
+    self.scrollingSessionHasStarted = NO;
+    self.hasStarted = NO;
 }
 
 #pragma mark Scrolling
@@ -125,7 +130,7 @@
 
 -(BOOL)angleIsForward:(CGFloat)angle
 {
-    NSLog(@"calibratedangle is %f", self.calibratedAngle);
+    //NSLog(@"calibratedangle is %f", self.calibratedAngle);
     return angle > (20 + self.calibratedAngle) ? YES : NO;
 }
 
@@ -135,8 +140,8 @@
     {
         //NSLog(@"Tilted %f degrees clockwise", leftOrRightAngle);
         if (!isInWebView)
-        {   // leftOrRightAngle/5 is the distance to be scrolled
-            if (scrollView.contentOffset.y + leftOrRightAngle/5 >= -64 && scrollView.contentOffset.y + leftOrRightAngle/5 <= scrollView.bounds.size.height && !self.selectModeIsOn)
+        {
+            if (scrollView.contentOffset.y + leftOrRightAngle/5 >= -64 && !self.selectModeIsOn)
             {
                 CGPoint offsetCGPoint = CGPointMake(scrollView.contentOffset.x, scrollView.contentOffset.y + leftOrRightAngle/5);
                 scrollView.contentOffset = offsetCGPoint;
@@ -145,7 +150,7 @@
                 {
                     // This should happen only ONCE per scrolling session- note when a scrollingsession began and when it ends
                     [self.delegate addObserverForAdjustToNearestRowNotification];
-                    //NSLog(@"delegate called");
+                    NSLog(@"delegate method addObserverForAdjustToNearestRowNotification called");
                     self.scrollingSessionHasStarted = YES;
                 }
                 
@@ -193,13 +198,13 @@
         }
         if (self.selectModeIsOn)
         {
-            //NSDictionary *dictionaryWithBools = @{[NSNumber numberWithBool:[self floatIsPositive:forwardOrBackwardAngle]]:@"atTop",[NSNumber numberWithBool:isInWebView]:@"inWebView"};
+            // For some reason when separating into a dictionary to put in the notification, the following code does not allow the rect selector to start from the bottom: NSDictionary *dictionaryWithBools = @{[NSNumber numberWithBool:[self floatIsPositive:forwardOrBackwardAngle]]:@"atTop",[NSNumber numberWithBool:isInWebView]:@"inWebView"};
             // Post this notification and immediately remove the observer, as we want this to happen only once
             [[NSNotificationCenter defaultCenter] postNotificationName:RAPCreateRectSelectorNotification object:self userInfo:[NSDictionary dictionaryWithObjects:@[[NSNumber numberWithBool:[self angleIsForward:forwardOrBackwardAngle]], [NSNumber numberWithBool:isInWebView]] forKeys:@[@"atTop",@"inWebView"]]];
             //NSLog(@"Attop is %d", [self floatIsPositive:forwardOrBackwardAngle]);
             //NSLog(@"Tilted %f degrees forward", forwardOrBackwardAngle);
         }
-        if (!self.selectModeIsOn)
+        else if (!self.selectModeIsOn)
         {
             // Post this notification and immediately remove the observer, as we want this to happen only once
             [[NSNotificationCenter defaultCenter] postNotificationName:RAPRemoveRectSelectorNotification object:self];
@@ -208,13 +213,13 @@
     }
     
     if (forwardOrBackwardAngle < 20 + self.calibratedAngle && forwardOrBackwardAngle > -20 + self.calibratedAngle && leftOrRightAngle < 10 && leftOrRightAngle > -10)
-        {
-            // Prevent each millisecond of having device tilted turn select mode on/off repeatedly
-            self.selectModeHasBeenSwitched = NO;
-            self.scrollingSessionHasStarted = NO;
-            [[NSNotificationCenter defaultCenter] postNotificationName:RAPTableViewShouldAdjustToNearestRowAtIndexPathNotification object:self];
-        }
-
+    {
+        // Prevent each millisecond of having device tilted turn select mode on/off repeatedly
+        self.selectModeHasBeenSwitched = NO;
+        self.scrollingSessionHasStarted = NO;
+        [[NSNotificationCenter defaultCenter] postNotificationName:RAPTableViewShouldAdjustToNearestRowAtIndexPathNotification object:self];
+    }
+    
 }
 
 -(void)segueSuccessful

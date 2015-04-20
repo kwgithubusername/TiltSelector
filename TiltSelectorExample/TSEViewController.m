@@ -9,11 +9,15 @@
 #import "TSEViewController.h"
 #import "TSEDataSource.h"
 #import "TSESecondViewController.h"
-@interface TSEViewController ()
+
+
+@interface RAPTiltToScrollViewController()
+-(void)adjustTableView;
+@end
 
 #define RAPSegueNotification @"RAPSegueNotification"
 #define RAPGetRectSelectorShapesNotification @"RAPGetRectSelectorShapesNotification"
-
+@interface TSEViewController ()
 @property (weak, nonatomic) IBOutlet UITableView *tableView;
 @property (nonatomic) TSEDataSource *dataSource;
 
@@ -22,8 +26,6 @@
 @implementation TSEViewController
 
 #pragma mark Protocol
-
-#pragma mark Notify superclass to get rect selector shapes
 
 -(void)segueWhenSelectedRow
 {
@@ -42,9 +44,12 @@
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(segueWhenSelectedRow) name:RAPSegueNotification object:nil];
 }
 
+#pragma mark Notify superclass to get rect selector shapes
+
 -(void)notifySuperclassToGetRectSelectorShapes
 {
     [[NSNotificationCenter defaultCenter] postNotificationName:RAPGetRectSelectorShapesNotification object:self];
+    // Alternative to adjustTableView
 }
 
 -(void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender
@@ -92,6 +97,7 @@
 {
     [super viewWillAppear:animated];
     [self addSelfAsObserverForSegueWhenSelectedRow];
+    [self adjustTableView];
 }
 
 - (void)viewWillDisappear:(BOOL)animated
@@ -103,7 +109,6 @@
     [super viewDidLoad];
     self.automaticallyAdjustsScrollViewInsets = NO;
     [self setupDataSource];
-    [self notifySuperclassToGetRectSelectorShapes];
     // Do any additional setup after loading the view, typically from a nib.
 }
 

@@ -8,6 +8,10 @@
 
 #import "TSESecondViewController.h"
 #import "TSEDataSource.h"
+@interface RAPTiltToScrollViewController()
+-(void)adjustTableView;
+@end
+
 @interface TSESecondViewController ()
 
 #define RAPGetRectSelectorShapesNotification @"RAPGetRectSelectorShapesNotification"
@@ -22,6 +26,7 @@
 -(void)notifySuperclassToGetRectSelectorShapes
 {
     [[NSNotificationCenter defaultCenter] postNotificationName:RAPGetRectSelectorShapesNotification object:self];
+    // Alternative to adjustTableView
 }
 
 - (void)setupDataSource
@@ -48,8 +53,13 @@
     [super viewDidLoad];
     self.automaticallyAdjustsScrollViewInsets = NO;
     [self setupDataSource];
-    [self notifySuperclassToGetRectSelectorShapes];
     // Do any additional setup after loading the view, typically from a nib.
+}
+
+-(void)viewDidAppear:(BOOL)animated
+{
+    [super viewWillAppear:animated];
+    [self adjustTableView];
 }
 
 - (void)viewWillAppear:(BOOL)animated
