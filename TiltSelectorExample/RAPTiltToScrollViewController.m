@@ -292,12 +292,12 @@
         self.navigationController.navigationBar.alpha = 0.5;
         self.rectangleSelector.tag = 999;
     }
-        //Boilerplate
-        [self.view addSubview:self.rectangleSelector];
-        [self.view bringSubviewToFront:self.rectangleSelector];
-        [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(userSelectedRow) name:RAPSelectRowNotification object:self.tiltToScroll];
-        [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(removeRectSelector) name:RAPRemoveRectSelectorNotification object:self.tiltToScroll];
-        self.rectSelectorHasBeenMade = YES;
+    //Boilerplate
+    [self.view addSubview:self.rectangleSelector];
+    [self.view bringSubviewToFront:self.rectangleSelector];
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(userSelectedRow) name:RAPSelectRowNotification object:self.tiltToScroll];
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(removeRectSelector) name:RAPRemoveRectSelectorNotification object:self.tiltToScroll];
+    self.rectSelectorHasBeenMade = YES;
     
 }
 
@@ -322,7 +322,7 @@
 {
     [[NSNotificationCenter defaultCenter] addObserverForName:RAPCreateRectSelectorNotification object:self.tiltToScroll queue:nil usingBlock:^(NSNotification *note)
      {
-         NSLog(@"angle received was %@", note.userInfo[@"angle"]);
+         // NSLog(@"angle received was %@", note.userInfo[@"angle"]);
          [[NSNotificationCenter defaultCenter] removeObserver:self name:RAPCreateRectSelectorNotification object:self.tiltToScroll];
          [self createRectSelectorAtTop:[[note.userInfo objectForKey:@"atTop"] boolValue] inWebView:[[note.userInfo objectForKey:@"inWebView"] boolValue]];
          //NSLog(@"atTop notification is %d", [[note.userInfo objectForKey:@"atTop"] boolValue]);

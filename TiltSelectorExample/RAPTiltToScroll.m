@@ -86,7 +86,7 @@ const CGFloat CONTENTOFFSET_LIMIT = -64;
              CGFloat tiltAngleForwardorBackward = [self ForwardOrBackwardAngleInDegreesUsingXGravity:motion.gravity.x
                                                                                             YGravity:motion.gravity.y
                                                                                          andZGravity:motion.gravity.z];
-             NSLog(@"forwardorbackward is %f", tiltAngleForwardorBackward);
+             // NSLog(@"forwardorbackward is %f", tiltAngleForwardorBackward);
              
              if (self.isCalibrating)
              {
@@ -203,7 +203,7 @@ const CGFloat CONTENTOFFSET_LIMIT = -64;
     }
     if ((forwardOrBackwardAngle > FORWARD_BACKWARD_TILT_ANGLE_LIMIT + self.calibratedAngle || forwardOrBackwardAngle < -FORWARD_BACKWARD_TILT_ANGLE_LIMIT + self.calibratedAngle) && (leftOrRightAngle < LEFT_RIGHT_TILT_ANGLE_LIMIT || leftOrRightAngle > -LEFT_RIGHT_TILT_ANGLE_LIMIT))
     {
-        NSLog(@"Tilted %f degrees", forwardOrBackwardAngle);
+        // NSLog(@"Tilted %f degrees", forwardOrBackwardAngle);
         if (!self.selectModeHasBeenSwitched) // selectModeHasBeenSwitched is needed to differentiate between neutral state and selecting state. selectModeIsOn is used to toggle between creating the rect selector and removing it.
         {
             BOOL change = !self.selectModeIsOn;
