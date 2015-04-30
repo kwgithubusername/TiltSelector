@@ -94,6 +94,7 @@
 -(void)adjustTableView
 {
     // This method is needed to scroll the tableview to show entire cells when the user stops scrolling; That way no half, quarter, or other portion of a cell is missing and the rectangle selector will be hovering over only one cell
+    
     if (!self.tiltToScroll.hasStarted)
     {
         [self performSelector:@selector(startTiltToScroll) withObject:nil afterDelay:0.5];

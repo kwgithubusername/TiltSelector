@@ -12,6 +12,8 @@
 
 
 @interface RAPTiltToScrollViewController()
+
+// Call this method when all the data has been loaded
 -(void)adjustTableView;
 @end
 
