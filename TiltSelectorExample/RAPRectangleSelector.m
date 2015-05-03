@@ -49,6 +49,7 @@
             [self setup];
         }
     }
+    // NSLog(@"%lu objects in rectsMutableArray: %@", [self.rectsMutableArray count], self.rectsMutableArray);
     return self;
 }
 

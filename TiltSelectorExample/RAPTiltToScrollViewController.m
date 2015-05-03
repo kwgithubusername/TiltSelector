@@ -194,7 +194,9 @@
 {
     [self.cellRectSizeArrayWithLastRowVisible removeAllObjects];
     
-    for (UITableViewCell *cell in [self.tableView visibleCells])
+    NSArray *visibleCellsArray = [[NSArray alloc] initWithArray:[self.tableView visibleCells]];
+    
+    for (UITableViewCell *cell in visibleCellsArray)
     {
         // Need to increment visible cells by 1;
         [self.cellRectSizeArrayWithLastRowVisible addObject:[NSValue valueWithCGRect:[self.tableView rectForRowAtIndexPath:[NSIndexPath indexPathForRow:[self.tableView indexPathForCell:cell].row+1 inSection:0]]]];
@@ -209,12 +211,15 @@
     
     [self.cellRectSizeArray removeAllObjects];
     
-    if ([self.tableView indexPathForCell:[[self.tableView visibleCells] lastObject]].row != [self.tableView numberOfRowsInSection:0]-1)
+    NSArray *visibleCellsArray = [[NSArray alloc] initWithArray:[self.tableView visibleCells]];
+    
+    // if the first row is equal to the first visible row OR if the last row in the actual table is not visible
+    if ([self.tableView indexPathForCell:[visibleCellsArray firstObject]].row == 0 || [self.tableView indexPathForCell:[visibleCellsArray lastObject]].row != [self.tableView numberOfRowsInSection:0]-1)
     {
         for (UITableViewCell *cell in [self.tableView visibleCells])
         {
             [self.cellRectSizeArray addObject:[NSValue valueWithCGRect:[self.tableView rectForRowAtIndexPath:[self.tableView indexPathForCell:cell]]]];
-            //NSLog(@"adding cell with indexPath %ld", (long)[self.tableView indexPathForCell:cell].row);
+            NSLog(@"adding cell with indexPath %ld", (long)[self.tableView indexPathForCell:cell].row);
         }
     }
     else

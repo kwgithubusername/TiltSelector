@@ -79,14 +79,25 @@
 {
     __weak TSEViewController *weakSelf = self;
     
-    UITableViewCell* (^configureCellBlock)(NSIndexPath *indexPath) = ^(NSIndexPath *indexPath) {
+    UITableViewCell* (^configureCellBlock)(NSIndexPath *indexPath) = ^(NSIndexPath *indexPath)
+    {
         UITableViewCell *tableViewCell = [weakSelf.tableView dequeueReusableCellWithIdentifier:@"cell"];
-        tableViewCell.textLabel.text = [[NSString alloc] initWithFormat:@"%ld", (long)indexPath.row];
+        
+        if (indexPath.row == [weakSelf.tableView numberOfRowsInSection:0]-1)
+        {
+            tableViewCell.textLabel.text = @"Placeholder; set text to empty string";
+        }
+        else
+        {
+            tableViewCell.textLabel.text = [[NSString alloc] initWithFormat:@"%ld", (long)indexPath.row];
+        }
         return tableViewCell;
     };
     
     NSInteger (^numberOfRowsBlock)() = ^NSInteger() {
-        return 15;
+        
+        // Add an placeholder row at the bottom so that the toolbar does not cover the tableView.
+        return 3;
     };
     
     self.dataSource = [[TSEDataSource alloc] initWithConfigureCellBlock:configureCellBlock
@@ -99,6 +110,11 @@
 {
     [super viewWillAppear:animated];
     [self addSelfAsObserverForSegueWhenSelectedRow];
+}
+
+-(void)viewDidAppear:(BOOL)animated
+{
+    [super viewDidAppear:animated];
     [self adjustTableView];
 }
 
