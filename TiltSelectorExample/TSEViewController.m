@@ -97,7 +97,7 @@
     NSInteger (^numberOfRowsBlock)() = ^NSInteger() {
         
         // Add an placeholder row at the bottom so that the toolbar does not cover the tableView.
-        return 3;
+        return 15;
     };
     
     self.dataSource = [[TSEDataSource alloc] initWithConfigureCellBlock:configureCellBlock
